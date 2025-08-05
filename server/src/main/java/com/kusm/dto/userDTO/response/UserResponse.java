@@ -1,5 +1,5 @@
 // UserResponse.java
-package com.kusm.dto;
+package com.kusm.dto.userDTO.response;
 
 import java.time.LocalDateTime;
 

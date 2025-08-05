@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kusm.dto.LoginRequest;
-import com.kusm.dto.OtpVerificationRequest;
-import com.kusm.dto.SignUpRequest;
-import com.kusm.dto.UserResponse;
+import com.kusm.dto.userDTO.LoginRequest;
+import com.kusm.dto.userDTO.OtpVerificationRequest;
+import com.kusm.dto.userDTO.SignUpRequest;
+import com.kusm.dto.userDTO.response.UserResponse;
 import com.kusm.exceptions.InvalidOtpException;
 import com.kusm.exceptions.MaxOtpAttemptsExceededException;
 import com.kusm.exceptions.OtpExpiredException;

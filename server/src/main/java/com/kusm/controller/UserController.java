@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kusm.dto.ApiResponse;
-import com.kusm.dto.LoginRequest;
-import com.kusm.dto.OtpVerificationRequest;
-import com.kusm.dto.SignUpRequest;
-import com.kusm.dto.UserResponse;
+import com.kusm.dto.userDTO.LoginRequest;
+import com.kusm.dto.userDTO.OtpVerificationRequest;
+import com.kusm.dto.userDTO.SignUpRequest;
+import com.kusm.dto.userDTO.response.ApiResponse;
+import com.kusm.dto.userDTO.response.UserResponse;
 import com.kusm.service.UserService;
 
 import jakarta.validation.Valid;

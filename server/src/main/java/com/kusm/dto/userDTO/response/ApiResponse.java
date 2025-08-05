@@ -1,4 +1,4 @@
-package com.kusm.dto;
+package com.kusm.dto.userDTO.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
