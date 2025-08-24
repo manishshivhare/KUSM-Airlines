@@ -4,12 +4,15 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kusm.dto.userDTO.LoginRequest;
 import com.kusm.dto.userDTO.OtpVerificationRequest;
 import com.kusm.dto.userDTO.SignUpRequest;
+import com.kusm.dto.userDTO.response.LoginResponse;
 import com.kusm.dto.userDTO.response.UserResponse;
 import com.kusm.exceptions.InvalidOtpException;
 import com.kusm.exceptions.MaxOtpAttemptsExceededException;
@@ -19,6 +22,7 @@ import com.kusm.exceptions.UserNotFoundException;
 import com.kusm.model.User;
 import com.kusm.model.User.UserStatus;
 import com.kusm.repository.UserRepository;
+import com.kusm.utils.JwtUtil;
 
 @Service
 @Transactional
@@ -29,6 +33,9 @@ public class UserService {
 
     @Autowired
     private OtpService otpService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     private static final int OTP_EXPIRY_MINUTES = 5;
     private static final int MAX_OTP_ATTEMPTS = 3;
@@ -104,7 +111,7 @@ public class UserService {
         return "OTP sent successfully. Please verify to complete login.";
     }
 
-    public UserResponse verifyOtp(OtpVerificationRequest request) {
+    public LoginResponse verifyOtp(OtpVerificationRequest request) {
         User user = findUserByIdentifier(request.getIdentifier());
 
         // Check if max attempts exceeded
@@ -141,7 +148,11 @@ public class UserService {
 
         userRepository.save(user);
 
-        return convertToUserResponse(user);
+        // Generate JWT token
+        String token = jwtUtil.generateToken(user.getEmail(), user.getId());
+        UserResponse userResponse = convertToUserResponse(user);
+
+        return new LoginResponse(token, userResponse);
     }
 
     public String resendOtp(String identifier) {
@@ -165,6 +176,25 @@ public class UserService {
         }
 
         return "New OTP sent successfully.";
+    }
+
+    public UserResponse getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new UserNotFoundException("User not authenticated");
+        }
+
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        return convertToUserResponse(user);
+    }
+
+    public String logoutUser() {
+        // In JWT, logout is typically handled on client side by removing token
+        // But we can add token blacklisting logic here if needed
+        return "Logged out successfully";
     }
 
     // Helper methods

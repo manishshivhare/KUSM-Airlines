@@ -13,6 +13,7 @@ import com.kusm.dto.userDTO.LoginRequest;
 import com.kusm.dto.userDTO.OtpVerificationRequest;
 import com.kusm.dto.userDTO.SignUpRequest;
 import com.kusm.dto.userDTO.response.ApiResponse;
+import com.kusm.dto.userDTO.response.LoginResponse;
 import com.kusm.dto.userDTO.response.UserResponse;
 import com.kusm.service.UserService;
 
@@ -44,14 +45,26 @@ public class UserController {
     }
 
     @PostMapping("/verify-otp")
-    public ResponseEntity<ApiResponse<UserResponse>> verifyOtp(@Valid @RequestBody OtpVerificationRequest request) {
-        UserResponse userResponse = userService.verifyOtp(request);
-        return ResponseEntity.ok(ApiResponse.success("OTP verified successfully", userResponse));
+    public ResponseEntity<ApiResponse<LoginResponse>> verifyOtp(@Valid @RequestBody OtpVerificationRequest request) {
+        LoginResponse loginResponse = userService.verifyOtp(request);
+        return ResponseEntity.ok(ApiResponse.success("OTP verified successfully", loginResponse));
     }
 
     @PostMapping("/resend-otp")
     public ResponseEntity<ApiResponse<String>> resendOtp(@RequestBody String identifier) {
         String message = userService.resendOtp(identifier.trim().replace("\"", ""));
+        return ResponseEntity.ok(ApiResponse.success(message));
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<ApiResponse<UserResponse>> getCurrentUser() {
+        UserResponse userResponse = userService.getCurrentUser();
+        return ResponseEntity.ok(ApiResponse.success("User profile retrieved successfully", userResponse));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<String>> logout() {
+        String message = userService.logoutUser();
         return ResponseEntity.ok(ApiResponse.success(message));
     }
 }

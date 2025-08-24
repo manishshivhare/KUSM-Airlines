@@ -25,7 +25,7 @@ public class ProfileService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
+    // @Autowired
     private S3Service s3Service;
 
     public ProfileResponse getProfile(Long userId) {

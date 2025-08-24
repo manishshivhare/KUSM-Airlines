@@ -1,5 +1,9 @@
 package com.kusm.model;
 
+import java.sql.Timestamp;
+
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,6 +45,12 @@ public class Address {
     @Size(min = 3, max = 20, message = "Postal code must be between 3 and 20 characters")
     @Column(nullable = false, length = 20)
     private String postalCode;
+
+    @UpdateTimestamp
+    private Timestamp createdAt;
+
+    @UpdateTimestamp
+    private Timestamp updatedAt;
     
     // Constructor for basic address
     public Address(String addressLine1, String city, String state, String postalCode) {

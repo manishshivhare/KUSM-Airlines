@@ -16,7 +16,7 @@ public class KusmApplication {
 
     public static void main(String[] args) {
         Dotenv dotenv = Dotenv.configure()
-                .directory(System.getProperty("user.dir" )+"/server") 
+                .directory(System.getProperty("user.dir"))
                 .filename(".env")
                 .load();
         dotenv.entries().forEach(entry

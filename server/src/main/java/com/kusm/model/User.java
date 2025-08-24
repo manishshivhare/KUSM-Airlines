@@ -3,6 +3,8 @@ package com.kusm.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -82,11 +84,15 @@ public class User {
     private UserStatus status = UserStatus.PENDING;
     
     // Audit fields
+    @UpdateTimestamp
     private LocalDateTime createdAt;
-    
+
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
     
     private LocalDateTime lastLoginAt;
+
+    
     
     // Enum for user status
     public enum UserStatus {
